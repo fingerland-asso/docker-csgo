@@ -1,39 +1,7 @@
-FROM ubuntu
+FROM fingerland/lgsm
 MAINTAINER Caderrik <caderrik@gmail.com>
 
-################################################################################
-## app infos
-ENV INSTALL_DIR=/cs-go GAME_TYPE= GAME_MODE= MAPGROUP= MAP= STARTUP_OPTIONS= PORT=27015
+ENV GAMETYPE=0 GAMEMODE=0 DEFAULTMAP=de_dust2 MAPGROUP=random_classic MAXPLAYERS=16 TICKRATE=64 PORT=27015 SOURCETVPORT=27005 SERVER=csgoserver
+EXPOSE "${PORT}" "${PORT}/udp" "${SOURCETVPORT}"
 
-VOLUME "${INSTALL_DIR}"
-EXPOSE ${PORT}
-
-################################################################################
-## app deps
-RUN set -x && \
-    apt-get update -qq && \
-    apt-get install -qq curl lib32gcc1
-
-################################################################################
-## cleaning as root
-RUN apt-get clean autoclean purge && \
-    rm -fr /tmp/*
-
-RUN useradd -r -m -u 1000 steam
-
-################################################################################
-## volume
-RUN mkdir -p "${INSTALL_DIR}" && \
-    chown steam -R "${INSTALL_DIR}" && \
-    chmod 755 -R "${INSTALL_DIR}"
-
-################################################################################
-## app config
-COPY motd.txt /home/steam/samples/motd.txt
-COPY autoexec.cfg /home/steam/samples/autoexec.cfg
-COPY run.sh /usr/local/bin/run-csgo
-
-################################################################################
-## app run
-USER steam
-CMD ["/usr/local/bin/run-csgo"]
+COPY prerun.sh /usr/local/bin/prerun-server

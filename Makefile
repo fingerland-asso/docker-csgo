@@ -1,9 +1,9 @@
 ############################### change if needed ###############################
-CONTAINER=ark-csgo
+CONTAINER=csgoserver
 VOLUME=/data/dockers/${CONTAINER}
 IMAGE=fingerland/${CONTAINER}
 PORT=27015
-OPTIONS=-v '${VOLUME}:/cs-go' -p '${PORT}:${PORT}'
+OPTIONS=-v '${VOLUME}:/server' -p '${PORT}:${PORT}'
 ################################ computed data #################################
 SERVICE_ENV_FILE=${PWD}/${CONTAINER}.env
 SERVICE_FILE=${PWD}/${CONTAINER}.service
