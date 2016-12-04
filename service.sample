@@ -1,0 +1,16 @@
+[Unit]
+Description=Counter-Strike : Global Offensive - server
+After=docker.service
+Requires=docker.service
+
+[Service]
+Restart=always
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill ${CONTAINER}
+ExecStartPre=-/usr/bin/docker rm ${CONTAINER}
+ExecStartPre=-/usr/bin/docker pull ${IMAGE}
+ExecStart=/usr/bin/docker run -ti ${OPTIONS} --name=${CONTAINER} ${IMAGE}
+ExecStop=/usr/bin/docker stop ${CONTAINER}
+
+[Install]
+WantedBy=default.target
